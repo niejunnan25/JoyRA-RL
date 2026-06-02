@@ -1,0 +1,36 @@
+# Value Function 训练配置文件
+# 用于训练 QwenValue 价值函数模型
+
+run_id: qwen_value
+run_root_dir: results/Checkpoints
+seed: 42
+
+framework:
+  name: QwenValue
+  qwenvl:
+    base_vlm: /mnt/workspace/users/niejunnan/assets/huggingface_assets/models/Qwen/Qwen3-VL-4B-Instruct
+    attn_implementation: flash_attention_2
+    vl_hidden_dim: 2048
+  
+  value_num_bins: 201  # 与 π₀.₆\* 论文一致，使用 201 个 bin
+
+datasets:
+  vla_data:
+    dataset_py: lerobot_datasets
+    data_root_dir: /mnt/workspace/datasets/
+    data_mix: sq_agi_beta
+    action_type: delta_ee
+    # CoT_prompt: "Your task is {instruction}. To identify the key objects for your task. Locate their bounding boxes in [x1,y1,x2,y2] format."
+    # CoT_answer: bbox
+    default_image_resolution: [3, 224, 224]
+    per_device_batch_size: 16
+    load_all_data_for_training: true
+    # obs: ["image_0"]
+    image_size: [224,224]
+    delete_pause_frame: false
+    include_state: false
+
+# 注意：
+# - 数据加载在 train_value.py 中通过命令行参数处理，不在此配置文件中
+# - 训练超参（learning_rate, batch_size, epochs）在 run_value.sh 中通过命令行参数指定
+# - bin_min/bin_max 在 run_value.sh 中通过命令行参数指定

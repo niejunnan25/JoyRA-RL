@@ -1,0 +1,1 @@
+注意修改JoyRA/examples/Robocasa_tabletop/eval_files/model2robocasa_interface.py中的_resize_image函数，若data_config.py中训练数据使用VideoResizePad，则使用第二个_resize_image函数（目前是这个）

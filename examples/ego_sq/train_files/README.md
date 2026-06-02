@@ -1,0 +1,11 @@
+基本使用方法：
+1.在starvla_cotrain_ego_sq.yaml中设置必要的训练参数，如action_dim、future_action_window_size、action_horizon，分布决定训练时模型的动作维度，和模型预测未来的action chunk长度。
+2.在run_ego_sq.sh中设置必要的训练参数，如wandb相关，run_root_dir，base_vlm路径，freeze_module_list需要冻结的部分，data_root_dir数据集路径，data_mix数据混训模式。
+3.bash run_ego_sq.sh启动训练
+
+
+注意事项：
+1.若修改action horizon长度，要starvla_cotrain_ego_sq.yaml中future_action_window_size、action_horizon一起修改，还有starVLA/dataloader/gr00t_lerobot/data_config.py中的目标数据集下的action_indices。
+2.data_mix可以查看starVLA/dataloader/gr00t_lerobot/mixtures.py中的分类，freeze_module_list可冻结的部分可以为qwen_vl_interface,action_model.model,action_model.state_encoder,action_model.future_tokens,action_model.position_embedding
+3.batch size=bash文件中的NUM_GPUS_PER_NODE*per_device_batch_size*训练卡数
+4.目前版本loss中不加入action mask，若想使用action mask，需要手动在starVLA/model/modules/action_model/GR00T_ActionHeader.py中318-338行的代码注释去掉

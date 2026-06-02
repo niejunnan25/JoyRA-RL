@@ -1,0 +1,10 @@
+{
+  "bin_min": -3153.0,
+  "bin_max": 0.0,
+  "num_trajs_sampled": 1104926,
+  "num_trajs_total": 1104926,
+  "num_steps_sampled": 279867005,
+  "gamma": 1.0,
+  "big_negative": 100.0,
+  "data_mix": "sq_agi_beta"
+}
