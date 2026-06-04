@@ -270,6 +270,29 @@ DATASET_NAMED_MIXTURES = {
     ],
 
 
+    "libero_spatial_pi0_20260530": [
+        ("libero_spatial_pi0_20260530_lerobot", 1.0, "libero_franka"),
+    ],
+
+    "libero_goal_pi0_20260530": [
+        ("libero_goal_pi0_20260530_lerobot", 1.0, "libero_franka"),
+    ],
+
+    "libero_object_pi0_20260530": [
+        ("libero_object_pi0_20260530_lerobot", 1.0, "libero_franka"),
+    ],
+
+    "libero_10_pi0_20260603_merged": [
+        ("libero_10_pi0_20260603_merged_lerobot", 1.0, "libero_franka"),
+    ],
+
+    "libero_all_pi0_20260603": [
+        ("libero_spatial_pi0_20260530_lerobot", 1.0, "libero_franka"),
+        ("libero_goal_pi0_20260530_lerobot", 1.0, "libero_franka"),
+        ("libero_object_pi0_20260530_lerobot", 1.0, "libero_franka"),
+        ("libero_10_pi0_20260603_merged_lerobot", 1.0, "libero_franka"),
+    ],
+
     "libero_all": [
         ("libero_object_no_noops_1.0.0_lerobot", 1.0, "libero_franka"),
         ("libero_goal_no_noops_1.0.0_lerobot", 1.0, "libero_franka"),
@@ -415,6 +438,43 @@ DATASET_NAMED_MIXTURES = {
         ("rl_offline_ee3/turn_switch", 1.0, "my_robotwin_reversed"),
 
         # ("rl_offline_ee3/dump_bin_bigbin", 1.0, "my_robotwin_reversed"),
+    ],
+
+    "robotwin_pi05_demo_clean_qpos_rollout": [
+        (
+            "robotwin_pi05_demo_clean_qpos_rollout",
+            1.0,
+            "robotwin_qpos_left_right",
+        ),
+    ],
+
+    "robotwin_pi05_demo_clean_qpos_rollout_success": [
+        (
+            "robotwin_pi05_demo_clean_qpos_rollout_success",
+            1.0,
+            "robotwin_qpos_left_right",
+        ),
+    ],
+
+    "robotwin_pi05_demo_clean_qpos_rollout_failure": [
+        (
+            "robotwin_pi05_demo_clean_qpos_rollout_failure",
+            1.0,
+            "robotwin_qpos_left_right",
+        ),
+    ],
+
+    "robotwin_pi05_demo_clean_qpos_rollout_success_failure": [
+        (
+            "robotwin_pi05_demo_clean_qpos_rollout_success",
+            1.0,
+            "robotwin_qpos_left_right",
+        ),
+        (
+            "robotwin_pi05_demo_clean_qpos_rollout_failure",
+            1.0,
+            "robotwin_qpos_left_right",
+        ),
     ],
 
     # Agibot G1（非 Robotwin）：desk_organization_combine_pnp 下多子目录；robot_type=agibot_g1_kingkong_eepose

@@ -1687,6 +1687,24 @@ class RoboTwinDataConfigReversed(RoboTwinDataConfig):
         "action.right_gripper",
     ]
     action_indices = list(range(30))
+
+
+class RoboTwinQposLeftRightDataConfig(RoboTwinDataConfig):
+    """RoboTwin 14D qpos data stored as left arm + left gripper + right arm + right gripper."""
+
+    state_keys = [
+        "state.left_arm",
+        "state.left_gripper",
+        "state.right_arm",
+        "state.right_gripper",
+    ]
+    action_keys = [
+        "action.left_arm",
+        "action.left_gripper",
+        "action.right_arm",
+        "action.right_gripper",
+    ]
+    action_indices = list(range(30))
         
 ###########################################################################################
 
@@ -1704,6 +1722,7 @@ ROBOT_TYPE_CONFIG_MAP = {
     "robotwin": AgilexDataConfig(),
     "my_robotwin": RoboTwinDataConfig(),
     "my_robotwin_reversed": RoboTwinDataConfigReversed(),
+    "robotwin_qpos_left_right": RoboTwinQposLeftRightDataConfig(),
     "fourier_gr1_arms_waist": FourierGr1ArmsWaistDataConfig(),
     "agibot_genie1": AgibotGenie1DataConfig(),
     "agibot_genie1_joint": AgibotGenie1JointDataConfig(),

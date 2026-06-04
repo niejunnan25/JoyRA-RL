@@ -395,17 +395,26 @@ def load_raw_video_frames(
         else list(range(len(df)))
     )
 
-    video_keys = []
-    for key in info.get("features", {}).keys():
+    video_keys: list[tuple[str, str]] = []
+    for key, feature in info.get("features", {}).items():
         if key.startswith("observation.images."):
-            video_keys.append(key.split("observation.images.", 1)[1])
+            video_keys.append((key.split("observation.images.", 1)[1], key))
+        elif key.startswith("observation.") and feature.get("dtype") == "video":
+            video_keys.append((key.split("observation.", 1)[1], key))
     if not video_keys:
-        raise ValueError(f"{meta_dir / 'info.json'} 未找到 observation.images.* 视频键")
+        raise ValueError(
+            f"{meta_dir / 'info.json'} 未找到 observation.images.* 或 observation.* video 键"
+        )
 
     captures: dict[str, cv2.VideoCapture] = {}
     try:
-        for key in video_keys:
-            candidate_keys = [key, f"observation.images.{key}"]
+        for display_key, video_key in video_keys:
+            candidate_keys = [
+                video_key,
+                display_key,
+                f"observation.images.{display_key}",
+                f"observation.{display_key}",
+            ]
             candidates = [
                 dataset_dir
                 / info["video_path"].format(
@@ -423,7 +432,7 @@ def load_raw_video_frames(
             cap = cv2.VideoCapture(str(video_path))
             if not cap.isOpened():
                 raise RuntimeError(f"无法打开视频: {video_path}")
-            captures[key] = cap
+            captures[display_key] = cap
 
         frames_by_step: dict[int, List[np.ndarray]] = {}
         for step in step_ids:
@@ -431,12 +440,12 @@ def load_raw_video_frames(
                 continue
             frame_idx = int(frame_indices[step])
             views: List[np.ndarray] = []
-            for key in video_keys:
-                cap = captures[key]
+            for display_key, _video_key in video_keys:
+                cap = captures[display_key]
                 cap.set(cv2.CAP_PROP_POS_FRAMES, frame_idx)
                 ok, bgr = cap.read()
                 if not ok or bgr is None:
-                    raise RuntimeError(f"读取视频帧失败: key={key}, frame={frame_idx}")
+                    raise RuntimeError(f"读取视频帧失败: key={display_key}, frame={frame_idx}")
                 views.append(cv2.cvtColor(bgr, cv2.COLOR_BGR2RGB))
             frames_by_step[int(step)] = views
         return frames_by_step

@@ -78,4 +78,5 @@ ROBOT_TYPE_TO_EMBODIMENT_TAG = {
     "agibot_genie1": EmbodimentTag.AGIBOT_GENIE1,
     "agibot_g1_kingkong_eepose": EmbodimentTag.AGIBOT_GENIE1,
     "galaxea_r1lite": EmbodimentTag.GALAXEA_R1LITE,
+    "robotwin_qpos_left_right": EmbodimentTag.NEW_EMBODIMENT,
 }

@@ -597,23 +597,30 @@ class LeRobotSingleDataset(Dataset):
         # Create a hash key based on configuration to ensure cache validity
         config_key = self._get_steps_config_key()
 
-        # Create a unique filename based on config_key
-        # steps_filename = f"steps_{config_key}.pkl"
-        # @BUG
-        # fast get static steps @fangjing --> don't use hash to dynamic sample
-        #
         # skip_invalid_subtask_frames 会依赖 parquet 中 subtask_index，缓存易过期且易与
         # steps_data_index.pkl 混淆；该模式下不使用任何 steps pkl（不读、不写）。
         skip_no_steps_cache = getattr(self, "_skip_invalid_subtask_frames", False)
-        steps_path = self.dataset_path / "meta" / "steps_data_index.pkl"
+        meta_dir = self.dataset_path / "meta"
+        steps_path = meta_dir / f"steps_{config_key}.pkl"
+        legacy_steps_path = meta_dir / "steps_data_index.pkl"
 
         if not skip_no_steps_cache:
-            # Try to load cached steps first
+            # Try to load the config-specific cache first. Fall back to the
+            # legacy cache only when its config key matches; otherwise stride
+            # changes can silently reuse stale step indices.
             try:
-                if steps_path.exists():
-                    with open(steps_path, "rb") as f:
+                for candidate in (steps_path, legacy_steps_path):
+                    if not candidate.exists():
+                        continue
+                    with open(candidate, "rb") as f:
                         cached_data = pickle.load(f)
-                    return cached_data["steps"]
+                    cached_config_key = cached_data.get("config_key")
+                    if cached_config_key == config_key:
+                        return cached_data["steps"]
+                    print(
+                        f"Cached steps config mismatch for {candidate}: "
+                        f"cached={cached_config_key}, expected={config_key}. Recomputing..."
+                    )
             except (FileNotFoundError, pickle.PickleError, KeyError) as e:
                 print(f"Failed to load cached steps: {e}")
                 print("Computing steps from scratch...")
@@ -627,7 +634,7 @@ class LeRobotSingleDataset(Dataset):
         all_steps = self._get_all_steps_single_process()
 
         if not skip_no_steps_cache:
-            # Cache the computed steps (standard path only)
+            # Cache the computed steps under a config-specific filename.
             try:
                 cache_data = {
                     "config_key": config_key,
@@ -636,6 +643,7 @@ class LeRobotSingleDataset(Dataset):
                     "total_steps": len(all_steps),
                     "computed_timestamp": pd.Timestamp.now().isoformat(),
                     "delete_pause_frame": self.delete_pause_frame,
+                    "step_stride": getattr(self, "step_stride", 1),
                 }
 
                 # Ensure the meta directory exists
@@ -2343,6 +2351,9 @@ class LeRobotMixtureDataset(Dataset):
             "image_right_wrist": "image_hand_right",
             # 单视角通用名字 -> 头部相机
             "image": "image_head_color",
+            # LIBERO converted rollouts use primary_image / wrist_image.
+            "primary_image": "image_head_color",
+            "wrist_image": "image_hand_right",
             # 一些数据集（例如某些 EgoDex / 自采集数据）使用 "ego_view" 作为单视角名，
             # 语义上也是「第一人称主视角」，这里同样归一到头部相机。
             "ego_view": "image_head_color",
@@ -2352,6 +2363,9 @@ class LeRobotMixtureDataset(Dataset):
             "video.image_right_wrist": "video.image_hand_right",
             # 单视角通用名字（带前缀） -> 头部相机
             "video.image": "video.image_head_color",
+            # LIBERO converted rollouts with video. prefix.
+            "video.primary_image": "video.image_head_color",
+            "video.wrist_image": "video.image_hand_right",
             # 带前缀的 ego_view
             "video.ego_view": "video.image_head_color",
         }
