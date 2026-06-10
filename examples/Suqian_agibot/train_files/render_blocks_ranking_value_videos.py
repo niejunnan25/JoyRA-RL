@@ -116,10 +116,11 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--normalize_use_big_negative_in_denom",
         action=argparse.BooleanOptionalAction,
-        default=False,
+        default=True,
         help=(
-            "Keep this aligned with training. Existing robotwin *_T scripts only pass "
-            "--normalize_returns_per_task, so default is False."
+            "Keep this aligned with current value training. Default is True, using "
+            "H + big_negative as the normalization denominator. Use "
+            "--no-normalize_use_big_negative_in_denom for old H-only checkpoints."
         ),
     )
     parser.add_argument("--frame_stride", type=int, default=1)

@@ -96,8 +96,10 @@ def parse_args():
     )
     parser.add_argument(
         "--normalize_use_big_negative_in_denom",
-        action="store_true",
-        help="归一化分母中使用 H + big_negative",
+        action=argparse.BooleanOptionalAction,
+        default=True,
+        help="默认开启，与当前 value 训练脚本一致：归一化分母使用 H + big_negative。"
+        "如需评估旧 H-only checkpoint，传 --no-normalize_use_big_negative_in_denom。",
     )
     parser.add_argument(
         "--value_only",

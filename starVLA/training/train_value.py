@@ -145,9 +145,10 @@ def parse_args():
     )
     parser.add_argument(
         "--normalize_use_big_negative_in_denom",
-        action="store_true",
-        help="如果启用，则在归一化分母中使用 H + big_negative 作为尺度（即“最大任务长度 + 失败罚分”）；"
-        "如果不启用，则只按 H 归一化（旧版行为）。",
+        action=argparse.BooleanOptionalAction,
+        default=True,
+        help="默认开启：归一化分母使用 H + big_negative（最大任务长度 + 失败罚分）。"
+        "如需旧版 H-only 行为，传 --no-normalize_use_big_negative_in_denom。",
     )
 
     # 训练超参
@@ -488,7 +489,7 @@ def main():
             model,
             device_ids=[local_rank],
             output_device=local_rank,
-            find_unused_parameters=False,
+            find_unused_parameters=True,
         )
     model.train()
 

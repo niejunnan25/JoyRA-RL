@@ -98,9 +98,9 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--normalize_use_big_negative_in_denom",
         action=argparse.BooleanOptionalAction,
-        default=False,
-        help="归一化分母是否使用 H + big_negative；与 train_value 一致时默认关闭（仅 H），"
-        "run_value_robotwin_with_RL_T 当前未传该开关。若训练显式加了 --normalize_use_big_negative_in_denom 再打开。",
+        default=True,
+        help="归一化分母是否使用 H + big_negative；默认开启，与当前 value 训练脚本一致。"
+        "如需可视化旧 H-only checkpoint，传 --no-normalize_use_big_negative_in_denom。",
     )
     parser.add_argument(
         "--normalize_returns_per_task",

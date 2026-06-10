@@ -11,6 +11,8 @@ files are compatibility wrappers only.
 - `run_value_libero_all_gemma_10epochs.sh`: spatial + goal + object + libero_10, `big_negative=250`.
 - `run_libero_spatial_30epochs_201bins.sh`: spatial 30 epochs, 201 bins, global BS 1024 on 8 GPUs.
 - `run_libero_spatial_30epochs_51bins.sh`: spatial 30 epochs, 51 bins, global BS 1024 on 8 GPUs.
+- `run_libero_10_30epochs_51bins.sh`: libero_10 30 epochs, 51 bins, global BS 1024 on 8 GPUs.
+- `run_libero_all_30epochs_51bins.sh`: spatial + goal + object + libero_10 30 epochs, 51 bins, global BS 1024 on 8 GPUs.
 
 ## Examples
 
@@ -18,6 +20,8 @@ files are compatibility wrappers only.
 cd /mnt/workspace/users/niejunnan/workspace/JoyRA-RL
 bash scripts/value_training/libero/run_libero_spatial_30epochs_201bins.sh
 bash scripts/value_training/libero/run_libero_spatial_30epochs_51bins.sh
+bash scripts/value_training/libero/run_libero_10_30epochs_51bins.sh
+bash scripts/value_training/libero/run_libero_all_30epochs_51bins.sh
 LIBERO_SUITE=all bash scripts/value_training/libero/run_value_libero_gemma_10epochs.sh
 ```
 

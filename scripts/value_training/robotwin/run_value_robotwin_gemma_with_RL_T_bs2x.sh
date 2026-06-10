@@ -48,6 +48,7 @@ echo "BIG_NEGATIVE=${BIG_NEGATIVE}"
 BATCH_SIZE=${BATCH_SIZE:-32}
 # Step-based value training, aligned with StarVLA trainer.max_train_steps.
 MAX_TRAIN_STEPS=${MAX_TRAIN_STEPS:-100000}
+NUM_BINS=${NUM_BINS:-201}
 LR=${LR:-3e-5}
 NUM_WORKERS=${NUM_WORKERS:-8}
 PREFETCH_FACTOR=${PREFETCH_FACTOR:-4}
@@ -76,6 +77,7 @@ echo "NUM_GPUS_PER_NODE=${NUM_GPUS_PER_NODE}"
 echo "BATCH_SIZE_PER_GPU=${BATCH_SIZE}"
 echo "GLOBAL_BATCH_SIZE=$((BATCH_SIZE * NUM_GPUS_PER_NODE * NUM_NODES))"
 echo "MAX_TRAIN_STEPS=${MAX_TRAIN_STEPS}"
+echo "NUM_BINS=${NUM_BINS}"
 echo "FRAME_STRIDE=${FRAME_STRIDE}"
 echo "NUM_WORKERS=${NUM_WORKERS}"
 echo "PIN_MEMORY=${PIN_MEMORY}"
@@ -130,6 +132,7 @@ env IS_TORCHRUN=1 torchrun \
   --big_negative ${BIG_NEGATIVE} \
   ${NORMALIZE_ARGS} \
   ${BIN_RANGE_ARGS} \
+  --num_bins ${NUM_BINS} \
   --max_train_steps ${MAX_TRAIN_STEPS} \
   --batch_size ${BATCH_SIZE} \
   --learning_rate ${LR} \

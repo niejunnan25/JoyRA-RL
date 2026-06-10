@@ -148,7 +148,7 @@ def compute_normalized_returns_from_traj(
     success_col: str = "episode_success",
     big_negative: float = 100.0,
     denom: Optional[int] = None,
-    use_big_negative_in_denom: bool = False,
+    use_big_negative_in_denom: bool = True,
     gamma: float = 1.0,
 ) -> Tuple[np.ndarray, np.ndarray]:
     """
@@ -163,15 +163,15 @@ def compute_normalized_returns_from_traj(
     归一化尺度：
       - denom=None: 使用当前 episode 的 H = episode_len - 1
       - denom 给定: 使用外部传入的 task 级 H = max_episode_len(task) - 1
-      - 默认 denom_eff = H，符合论文“per task maximum episode length”的描述
-      - use_big_negative_in_denom=True 时使用 H + C_fail，只作为兼容/调试选项
+      - 默认 denom_eff = H + C_fail，与当前训练脚本保持一致
+      - use_big_negative_in_denom=False 时只使用 H，作为旧版 H-only 兼容选项
     
     Args:
         traj_df: 轨迹 DataFrame
         success_col: 成功标记列名
         big_negative: 失败时的惩罚值（正数，内部会乘以 -1）
         denom: 可选的「时间地平线」H，用于 per-task 归一化。如果为 None，则使用 episode_len - 1。
-        use_big_negative_in_denom: 是否把 C_fail 加到归一化分母中。π0.6 复现默认应为 False。
+        use_big_negative_in_denom: 是否把 C_fail 加到归一化分母中。当前默认 True。
         gamma: return-to-go 的折扣系数；π0.6 默认为 1.0。
     
     Returns:
@@ -240,7 +240,7 @@ class LeRobotWithValueTarget(Dataset):
         returns_cache_path: Optional[str] = None,
         normalize_returns: bool = False,
         normalize_returns_per_task: bool = False,
-        normalize_use_big_negative_in_denom: bool = False,
+        normalize_use_big_negative_in_denom: bool = True,
     ) -> None:
         """
         Args:
@@ -850,7 +850,7 @@ class LeRobotMixtureWithValueTarget(Dataset):
         mode: str = "train",
         normalize_returns: bool = False,
         normalize_returns_per_task: bool = False,
-        normalize_use_big_negative_in_denom: bool = False,
+        normalize_use_big_negative_in_denom: bool = True,
         language_prefix: Optional[str] = None,
     ) -> None:
         """

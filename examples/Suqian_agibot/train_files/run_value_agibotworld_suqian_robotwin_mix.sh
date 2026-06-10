@@ -110,8 +110,8 @@ NORMALIZE_ARGS=""
 BIN_RANGE_ARGS=""
 
 if [ "${NORMALIZE_RETURNS_PER_TASK}" = "true" ]; then
-    NORMALIZE_ARGS="--normalize_returns_per_task"
-    echo "Using per-task normalized returns mode: returns will be in [-1.0, 0.0] range, bin_min=-1.0, bin_max=0.0 (per task denom)."
+    NORMALIZE_ARGS="--normalize_returns_per_task --normalize_use_big_negative_in_denom"
+    echo "Using per-task normalized returns mode WITH (H + big_negative) denom: returns in [-1.0, 0.0], bin_min=-1.0, bin_max=0.0."
 elif [ "${NORMALIZE_RETURNS}" = "true" ]; then
     NORMALIZE_ARGS="--normalize_returns"
     echo "Using per-episode normalized returns mode: returns will be in [-1.0, 0.0] range, bin_min=-1.0, bin_max=0.0"

@@ -257,7 +257,8 @@ def resolve_run_configuration(args: argparse.Namespace) -> argparse.Namespace:
 
     if args.normalize_returns_per_task:
         print(
-            "[Info] normalize_returns_per_task=True（与 run_value_*_T.sh 训练脚本一致）；"
+            "[Info] normalize_returns_per_task=True, "
+            f"normalize_use_big_negative_in_denom={args.normalize_use_big_negative_in_denom}；"
             "如需关闭请显式传 --no-normalize_returns_per_task"
         )
 
@@ -407,7 +408,11 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--normalize_use_big_negative_in_denom",
         action=argparse.BooleanOptionalAction,
-        default=False,
+        default=True,
+        help=(
+            "默认开启，与当前 value 训练脚本一致：归一化分母使用 H + big_negative。"
+            "如需评估旧 H-only checkpoint，传 --no-normalize_use_big_negative_in_denom。"
+        ),
     )
     parser.add_argument(
         "--normalize_returns_per_task",
@@ -739,7 +744,10 @@ def main() -> None:
         )
 
     if args.normalize_returns_per_task:
-        print("[Info] normalize_returns_per_task=True")
+        print(
+            "[Info] normalize_returns_per_task=True, "
+            f"normalize_use_big_negative_in_denom={args.normalize_use_big_negative_in_denom}"
+        )
     elif args.normalize_returns:
         print(
             "[Info] per-episode 归一化；若训练用了 --normalize_returns_per_task 请加上该参数"

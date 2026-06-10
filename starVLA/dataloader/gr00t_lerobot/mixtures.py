@@ -477,6 +477,74 @@ DATASET_NAMED_MIXTURES = {
         ),
     ],
 
+    "robotwin_pi05_blocks_ranking_rgb": [
+        (
+            "blocks_ranking_rgb",
+            1.0,
+            "robotwin_qpos_left_right",
+        ),
+    ],
+
+    "robotwin_pi05_blocks_ranking_size": [
+        (
+            "blocks_ranking_size",
+            1.0,
+            "robotwin_qpos_left_right",
+        ),
+    ],
+
+    "robotwin_pi05_blocks_ranking_all": [
+        (
+            "blocks_ranking_rgb",
+            1.0,
+            "robotwin_qpos_left_right",
+        ),
+        (
+            "blocks_ranking_size",
+            1.0,
+            "robotwin_qpos_left_right",
+        ),
+    ],
+
+    "robotwin_pi05_blocks_ranking_success_failure_balanced": [
+        (
+            "blocks_ranking_rgb_success_failure_balanced",
+            1.0,
+            "robotwin_qpos_left_right",
+        ),
+        (
+            "blocks_ranking_size_success_failure_balanced",
+            1.0,
+            "robotwin_qpos_left_right",
+        ),
+    ],
+
+    "robotwin_pi05_blocks_ranking_success80_failure20": [
+        (
+            "blocks_ranking_rgb_success80_failure20",
+            1.0,
+            "robotwin_qpos_left_right",
+        ),
+        (
+            "blocks_ranking_size_success80_failure20",
+            1.0,
+            "robotwin_qpos_left_right",
+        ),
+    ],
+
+    "robotwin_pi05_blocks_ranking_success_all_failure25": [
+        (
+            "blocks_ranking_rgb_success_all_failure25",
+            1.0,
+            "robotwin_qpos_left_right",
+        ),
+        (
+            "blocks_ranking_size_success_all_failure25",
+            1.0,
+            "robotwin_qpos_left_right",
+        ),
+    ],
+
     # Agibot G1（非 Robotwin）：desk_organization_combine_pnp 下多子目录；robot_type=agibot_g1_kingkong_eepose
     # 启动示例：bash run_value_agibot_g1_desk_organization_T.sh
     "agibot_g1_desk_organization_combine_pnp": [

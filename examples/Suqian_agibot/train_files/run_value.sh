@@ -1,3 +1,10 @@
+if [ "${ALLOW_LEGACY_VALUE_SCRIPT:-false}" != "true" ]; then
+  echo "ERROR: examples/Suqian_agibot/train_files/run_value.sh is a legacy script." >&2
+  echo "It points to /mnt/workspace/users/daiyixiang/JoyRA-RL and does not follow the current H + big_negative value-target policy." >&2
+  echo "Use scripts/value_training/* or rerun with ALLOW_LEGACY_VALUE_SCRIPT=true only if you intentionally need this old entrypoint." >&2
+  exit 1
+fi
+
 RDMA_DEVICES=$(ls /sys/class/infiniband)
 if [ -z "$RDMA_DEVICES" ]; then
   log "ERROR: No active RDMA devices found. Exiting script." >&2
@@ -136,5 +143,4 @@ env IS_TORCHRUN=1 torchrun \
   ${SAVE_BEST:+--save_best} \
   ${SAVE_STEPS:+--save_steps ${SAVE_STEPS}} \
   ${SAVE_TOTAL_LIMIT:+--save_total_limit ${SAVE_TOTAL_LIMIT}}
-
 

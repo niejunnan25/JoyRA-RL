@@ -68,7 +68,10 @@ setup_value_training_distributed() {
   NUM_GPUS_PER_NODE="${NUM_GPUS_PER_NODE:-${PET_NPROC_PER_NODE:-${default_num_gpus}}}"
 
   local detected_gpus
-  detected_gpus=$(python - <<'PY'
+  local python_bin
+  python_bin=$(command -v python || command -v python3 || true)
+  if [ -n "${python_bin}" ]; then
+    detected_gpus=$("${python_bin}" - <<'PY'
 try:
     import torch
     print(torch.cuda.device_count())
@@ -76,6 +79,9 @@ except Exception:
     print(0)
 PY
 )
+  else
+    detected_gpus=0
+  fi
   if [[ -z "${detected_gpus}" || "${detected_gpus}" -lt 1 ]]; then
     if command -v nvidia-smi >/dev/null 2>&1; then
       detected_gpus=$(nvidia-smi -L 2>/dev/null | wc -l | xargs)

@@ -20,11 +20,11 @@ bash scripts/value_training/libero/run_libero_spatial_30epochs_201bins.sh
 bash scripts/value_training/libero/run_libero_spatial_30epochs_51bins.sh
 ```
 
-RobotWin PI0.5 qpos 25k rollout, global BS 1024, 10 traditional epochs:
+RobotWin PI0.5 qpos 25k rollout, global BS 512, 30 traditional epochs, 101 bins:
 
 ```bash
 cd /mnt/workspace/users/niejunnan/workspace/JoyRA-RL
-bash scripts/value_training/robotwin/run_robotwin_pi05_qpos_gemma_10epochs_bs1024.sh
+bash scripts/value_training/robotwin/run_robotwin_pi05_qpos_gemma_30epochs_101bins_bs512.sh
 ```
 
 ## Dataset Mix Names
